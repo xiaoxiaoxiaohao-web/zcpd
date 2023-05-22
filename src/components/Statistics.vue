@@ -1,11 +1,11 @@
 <template>
     <div class="Statistics">
         <!-- <van-nav-bar title="统计" left-text="返回" left-arrow @click-left="onReturn"/> -->
-        <van-nav-bar title="统计" style="border-bottom: 1px solid black" />
+        <van-nav-bar title="统计" />
         <div class="main">
             <van-tabs v-model="active" animated sticky @click="onTabsClick">
                 <van-tab title="使用班组">
-                    <div class="table">
+                    <!-- <div class="table">
                         <table border="1">
                             <tr>
                                 <th v-for="(index) in thTitle" :key="index">{{index}}</th>
@@ -15,14 +15,16 @@
                                 <td>$100</td>
                             </tr>
                         </table>
-                    </div>
+                    </div> -->
                     <div class="charts" ref="sybzCharts"></div>
                 </van-tab>
                 <van-tab title="实际位置">
                     <div class="charts" ref="sjwzCharts"></div>
                 </van-tab>
                 <van-tab title="标签 3">内容 3</van-tab>
-                <van-tab title="标签 4">内容 4</van-tab>
+                <van-tab title="盘点情况">
+                    <div class="charts" ref="pdqkCharts"></div>
+                </van-tab>
             </van-tabs>
         </div>
         <Tabbar :TabbarActive="2"></Tabbar>
@@ -71,6 +73,12 @@ export default {
         },
         //获取使用班组数据
         getGroupBySybzData() {
+            let toast = this.$toast.loading({
+                duration: 0, // 持续展示 toast
+                forbidClick: false,  //是否禁止背景点击
+                loadingType: 'spinner',  //	加载图标类型
+                message: '加载中...',
+            });
             let chartData = []
             // 获取数据
             this.getData('groupBySybz', "").then(res => {
@@ -87,8 +95,19 @@ export default {
                     chartData.push(newMap)
                 });
                 this.createBarCharts(chartData, "使用班组")
+                this.$toast.clear()
             }).catch(err => {
                 console.log(err);
+                //请求失败，使用默认数据
+                chartData = [
+                    {name: '数据1', value: 10},
+                    {name: '数据2', value: 6},
+                    {name: '数据3', value: 17},
+                    {name: '数据4', value: 8},
+                    {name: '数据5', value: 13},
+                ]
+                this.createBarCharts(chartData, "演示数据")
+                this.$toast.clear()
             })
            
         },
@@ -96,8 +115,13 @@ export default {
         createBarCharts(chartData, name) {
             this.sybzCharts = this.$echarts.init(this.$refs.sybzCharts)
             let option = {
+                title: {
+                    text: name,
+                    left: 'center'
+                },
                 legend: {
-                    top: 'bottom'
+                    left: 'left',
+                    orient: 'vertical',
                 },
                 toolbox: {
                     show: true,
@@ -127,6 +151,11 @@ export default {
         },
         //获取实际位置数据
         getGroupBySjwzData() {
+            let toast = this.$toast.loading({
+                duration: 0, // 持续展示 toast
+                forbidClick: true,
+                message: '加载中...',
+            });
             let xAxisData = []
             let yAxisData = []
             this.getData('groupBySjwz', "").then(res => {
@@ -140,15 +169,25 @@ export default {
                     xAxisData.push(e.SJWZ)
                     yAxisData.push(e.NUM)
                 });
-                this.createPolarBarCharts(xAxisData, yAxisData)
+                this.createPolarBarCharts(xAxisData, yAxisData, '实际位置数据')
+                this.$toast.clear()
             }).catch(err => {
                 console.log(err);
+                //请求失败，使用默认数据
+                xAxisData = ['数据1', '数据2', '数据3', '数据4', '数据5']
+                yAxisData = ['11', '3', '6', '4', '16']
+                this.createPolarBarCharts(xAxisData, yAxisData, '演示数据')
+                this.$toast.clear()
             })
         },
         //构建极坐标柱状图
-        createPolarBarCharts(xAxisData, yAxisData) {
+        createPolarBarCharts(xAxisData, yAxisData, name) {
             this.sjwzCharts = this.$echarts.init(this.$refs.sjwzCharts)
             let option = {
+                title: {
+                    text: name,
+                    left: 'center'
+                },
                 xAxis: {
                     type: 'category',
                     data: xAxisData
@@ -165,6 +204,8 @@ export default {
             };
             option && this.sjwzCharts.setOption(option)
         },
+        //获取盘点情况数据
+
         getData(url, params) {
             return this.$axios({
                 method: 'post',
@@ -180,9 +221,15 @@ export default {
 /* .Statistics {
     width: 100%;
 } */
+.van-nav-bar {
+    width: 100%;
+    position: fixed;
+}
 .main {
     /* width: calc(100% - 2rem); */
-    margin-top: 1rem;
+    padding-top: 46px;
+    overflow: auto;
+    padding-bottom: 50px;
 }
 .charts {
     height: 30rem;

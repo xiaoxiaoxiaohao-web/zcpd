@@ -32,6 +32,8 @@ export default {
             }else if(index == 3) {
                 this.$router.push({path: '/my'})
             }
+            //点击别的板块，清空加载提示
+            this.$toast.clear()
         },
     }
 }
