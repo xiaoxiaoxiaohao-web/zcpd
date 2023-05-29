@@ -5,25 +5,13 @@
         <div class="main">
             <van-tabs v-model="active" animated sticky @click="onTabsClick">
                 <van-tab title="使用班组">
-                    <!-- <div class="table">
-                        <table border="1">
-                            <tr>
-                                <th v-for="(index) in thTitle" :key="index">{{index}}</th>
-                            </tr>
-                            <tr>
-                                <td>January</td>
-                                <td>$100</td>
-                            </tr>
-                        </table>
-                    </div> -->
                     <div class="charts" ref="sybzCharts"></div>
                 </van-tab>
                 <van-tab title="实际位置">
                     <div class="charts" ref="sjwzCharts"></div>
                 </van-tab>
-                <van-tab title="标签 3">内容 3</van-tab>
                 <van-tab title="盘点情况">
-                    <div class="charts" ref="pdqkCharts"></div>
+                    <div class="charts" ref="JnpdCharts"></div>
                 </van-tab>
             </van-tabs>
         </div>
@@ -57,9 +45,12 @@ export default {
             this.$router.go(-1)
         },
         onTabsClick(index, title) {
-            console.log(index, title);
-            if(index == 1){
+            if(index == 0){
+                this.getGroupBySybzData()
+            }else if (index == 1) {
                 this.getGroupBySjwzData()
+            }else{
+                this.getGroupByJnpdData()
             }
         },
         //获取表格数据
@@ -81,7 +72,7 @@ export default {
             });
             let chartData = []
             // 获取数据
-            this.getData('groupBySybz', "").then(res => {
+            this.$axios.post('/groupBySybz').then(res => {
                 let data = res.data.data
                 //对数据进行整理适应
                 data.forEach((e) => {
@@ -158,7 +149,7 @@ export default {
             });
             let xAxisData = []
             let yAxisData = []
-            this.getData('groupBySjwz', "").then(res => {
+            this.$axios.post('/groupBySjwz').then(res => {
                 let data = res.data.data
                 console.log(data);
                 //对数据进行整理适应
@@ -169,20 +160,20 @@ export default {
                     xAxisData.push(e.SJWZ)
                     yAxisData.push(e.NUM)
                 });
-                this.createPolarBarCharts(xAxisData, yAxisData, '实际位置数据')
+                this.createLineBarCharts(xAxisData, yAxisData, '实际位置数据', 'line', 'sjwzCharts')
                 this.$toast.clear()
             }).catch(err => {
                 console.log(err);
                 //请求失败，使用默认数据
                 xAxisData = ['数据1', '数据2', '数据3', '数据4', '数据5']
                 yAxisData = ['11', '3', '6', '4', '16']
-                this.createPolarBarCharts(xAxisData, yAxisData, '演示数据')
+                this.createLineBarCharts(xAxisData, yAxisData, '演示数据', 'line', 'sjwzCharts')
                 this.$toast.clear()
             })
         },
-        //构建极坐标柱状图
-        createPolarBarCharts(xAxisData, yAxisData, name) {
-            this.sjwzCharts = this.$echarts.init(this.$refs.sjwzCharts)
+        //构建折线/柱状图
+        createLineBarCharts(xAxisData, yAxisData, name, type, refs) {
+            this.sjwzCharts = this.$echarts.init(this.$refs[refs])
             let option = {
                 title: {
                     text: name,
@@ -197,20 +188,34 @@ export default {
                 },
                 series: [
                     {
-                    data: yAxisData,
-                    type: 'line'
+                        data: yAxisData,
+                        type: type
                     }
                 ]
             };
             option && this.sjwzCharts.setOption(option)
         },
-        //获取盘点情况数据
-
-        getData(url, params) {
-            return this.$axios({
-                method: 'post',
-                url: 'http://10.194.69.22:8520/api/zcpd/' + url,
-                params: params
+        //获取今年盘点情况数据
+        getGroupByJnpdData() {
+            let xAxisData = ['已盘点', '未盘点']
+            let yAxisData = []
+        
+            this.$axios.post('/groupByJnpd').then(res => {
+                let data = res.data.data
+                console.log(data);
+                //对数据进行整理适应
+                data.forEach((e) => {
+                    
+                    yAxisData.push(e.NUM)
+                });
+                this.createLineBarCharts(xAxisData, yAxisData, '今年盘点情况数据', 'bar', 'JnpdCharts')
+                this.$toast.clear()
+            }).catch(err => {
+                console.log(err);
+                //请求失败，使用默认数据
+                yAxisData = ['11', '12']
+                this.createLineBarCharts(xAxisData, yAxisData, '演示数据', 'bar', 'JnpdCharts')
+                this.$toast.clear()
             })
         }
     }

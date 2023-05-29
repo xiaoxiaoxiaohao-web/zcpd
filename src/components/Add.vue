@@ -39,19 +39,19 @@ export default {
             showCalendar: false,
             showInfo: true,
             params:{
-                zcbh: '',
-                zcmc: '',
-                xhge: '',
-                sybz: '',
-                sjwz: '',
-                bz: '',
-                ds: '',
-                yt: '',
-                syzt: '',
-                qyrq: '',
-                pdsl: '',
-                zclb: '',
-                img: ''
+                zcbh:'',
+                zcmc:'',
+                xhge:'',
+                sybz:'',
+                sjwz:'',
+                bz:'',
+                ds:'',
+                yt:'',
+                syzt:'',
+                qyrq:'',
+                pdsl:'',
+                zclb:'',
+                img:''
             },
             fileList: []
         }
@@ -76,6 +76,7 @@ export default {
         //增加
         onSubmit() {
             let params = this.params
+            console.log(params);
             this.add('insert', params)
         },
         //返回
@@ -108,7 +109,16 @@ export default {
         },
         add(api, params) {
             let that = this
-            this.getData(api, params).then(res => {
+            // this.$axios.post(api, params).then(res => {
+                
+            // })
+            console.log("11111111");
+            console.log(params);
+            this.$axios({
+                method: 'post',
+                url: '/insert',
+                data: params
+            }).then(res => {
                 if(res.status == 200){
                     this.$toast({
                         message: '增加成功',

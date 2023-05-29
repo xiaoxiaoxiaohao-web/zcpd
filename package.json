@@ -19,7 +19,7 @@
     "echarts": "^5.4.1",
     "lrz": "^4.9.41",
     "mint-ui": "^2.2.13",
-    "vant": "latest-v2",
+    "vant": "^2.12.54",
     "vue": "^2.5.2",
     "vue-cookies": "^1.8.3",
     "vue-router": "^3.1.3"

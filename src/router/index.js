@@ -41,6 +41,11 @@ Vue.use(Image)
 
 Vue.use(VueCookies)
 Vue.prototype.$axios = axios
+// 全局配置请求根路径
+axios.defaults.baseURL = 'http://10.194.69.22:8520/api/zcpd'
+// axios.defaults.headers = {
+//   'Content-Type': 'application/x-www-form-urlencoded'
+// }
 Vue.prototype.$echarts = echarts
 
 
