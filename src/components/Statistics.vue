@@ -64,12 +64,7 @@ export default {
         },
         //获取使用班组数据
         getGroupBySybzData() {
-            let toast = this.$toast.loading({
-                duration: 0, // 持续展示 toast
-                forbidClick: false,  //是否禁止背景点击
-                loadingType: 'spinner',  //	加载图标类型
-                message: '加载中...',
-            });
+            this.loading()
             let chartData = []
             // 获取数据
             this.$axios.post('/groupBySybz').then(res => {
@@ -142,11 +137,7 @@ export default {
         },
         //获取实际位置数据
         getGroupBySjwzData() {
-            let toast = this.$toast.loading({
-                duration: 0, // 持续展示 toast
-                forbidClick: true,
-                message: '加载中...',
-            });
+            this.loading()
             let xAxisData = []
             let yAxisData = []
             this.$axios.post('/groupBySjwz').then(res => {
@@ -199,6 +190,7 @@ export default {
         getGroupByJnpdData() {
             let xAxisData = ['已盘点', '未盘点']
             let yAxisData = []
+            this.loading()
         
             this.$axios.post('/groupByJnpd').then(res => {
                 let data = res.data.data
@@ -217,21 +209,26 @@ export default {
                 this.createLineBarCharts(xAxisData, yAxisData, '演示数据', 'bar', 'JnpdCharts')
                 this.$toast.clear()
             })
+        },
+        //加载
+        loading() {
+            this.$toast.loading({
+                duration: 0, // 持续展示 toast
+                forbidClick: false,  //是否禁止背景点击
+                loadingType: 'spinner',  //	加载图标类型
+                message: '加载中...',
+            });
         }
     }
 }
 </script>
 
 <style scoped>
-/* .Statistics {
-    width: 100%;
-} */
 .van-nav-bar {
     width: 100%;
     position: fixed;
 }
 .main {
-    /* width: calc(100% - 2rem); */
     padding-top: 46px;
     overflow: auto;
     padding-bottom: 50px;

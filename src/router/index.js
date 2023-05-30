@@ -46,7 +46,10 @@ axios.defaults.baseURL = 'http://10.194.69.22:8520/api/zcpd'
 // axios.defaults.headers = {
 //   'Content-Type': 'application/x-www-form-urlencoded'
 // }
+axios.defaults.timeout = 3000
 Vue.prototype.$echarts = echarts
+
+
 
 
 var router = new Router({

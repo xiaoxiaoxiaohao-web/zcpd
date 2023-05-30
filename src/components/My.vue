@@ -7,8 +7,8 @@
                     <van-image width="5rem" height="5rem" round src="https://img01.yzcdn.cn/vant/cat.jpeg" style="border: 2px solid #fff"/>
                 </div>
                 <div class="name">
-                    <h2>xiaoxiao</h2>
-                    <p>维护部门</p>
+                    <h2>{{ $store.state.userInfo.name }}</h2>
+                    <p>{{ $store.state.userInfo.department }}</p>
                 </div>
             </div>
             <van-cell-group>
@@ -55,7 +55,7 @@ export default {
         },
         //退出
         onExitClick() {
-            
+            this.$router.push({path: '/login'})
         }
     }
 }
@@ -76,4 +76,8 @@ export default {
     width: 100%;
     margin-left: 3rem;
 }
+.name > h2 {
+    color: white;
+}
+
 </style>

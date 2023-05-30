@@ -54,8 +54,11 @@ export default {
                         message: '登录成功',
                         position: 'top'
                     })
+                    //设置cookies
                     this.$cookies.config('30s')
                     this.$cookies.set('yhkh', username)
+                
+                    this.$store.commit('login', [username, '默认部门'])
                 }else {
                     this.$notify({ type: 'danger', message: '登录失败，用户名或密码错误' });
                 }
