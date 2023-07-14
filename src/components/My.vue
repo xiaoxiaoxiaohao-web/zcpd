@@ -7,13 +7,13 @@
                     <van-image width="5rem" height="5rem" round src="https://img01.yzcdn.cn/vant/cat.jpeg" style="border: 2px solid #fff"/>
                 </div>
                 <div class="name">
-                    <h2>{{ $store.state.userInfo.name }}</h2>
-                    <p>{{ $store.state.userInfo.department }}</p>
+                    <h2>{{ $store.state.user.ygxm }}</h2>
+                    <p>ID:{{ $store.state.user.ygid }}</p>
                 </div>
             </div>
             <van-cell-group>
-                <van-cell title="详细信息" icon="orders-o" size="large"  is-link @click="onInventoryClick()" />
-                <van-cell title="更新密码" icon="shield-o" size="large"  is-link @click="onInventoryClick()" />
+                <van-cell title="详细信息" icon="orders-o" size="large"  is-link @click="onDetailInfoClick()" />
+                <van-cell title="修改密码" icon="shield-o" size="large"  is-link @click="onChangePswClick()" />
                 <van-cell title="版本" icon="info-o" size="large" is-link @click="onVersionClick()" />
                 <van-cell title="退出" icon="revoke" size="large" is-link @click="onExitClick()" />
             </van-cell-group>
@@ -31,26 +31,23 @@ export default {
 
         }
     },
-     components: {
+    components: {
         Tabbar
     },
     methods: {
+        //详细信息
+        onDetailInfoClick() {
+            this.$router.push({name:'DetailInfo', query: {ygid: this.$store.state.user.ygid}})
+        },
+        //更新密码
+        onChangePswClick() {
+            this.$router.push({name:'ChangePsw', query: {yhkh: this.$store.state.user.yhkh}})
+        },
+        //版本
         onVersionClick() {
             this.$toast({
                 message: '当前版本为1.0.0',
                 time: 10,
-            })
-        },
-        //获取用户信息
-        getUserInfo() {
-            this.$axios({
-                methods: 'post',
-                url: '',
-                params: ''
-            }).then(res => {
-                console.log(res.data);
-            }).catch(err => {
-                console.log(err);
             })
         },
         //退出

@@ -5,20 +5,20 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        userInfo: {
-            name: '',
-            department: ''
+        user: {
+            ygxm: '',
+            ygid: '',
+            yhkh: ''
         }
     },
     getters: {
 
     },
     mutations: {
-        login(state, [name, department]) {
-            state.userInfo.name = name
-            state.userInfo.department = department
-            console.log(name);
-            console.log(department);
+        login(state, [ygxm, ygid, yhkh]) {
+            state.user.ygxm = ygxm
+            state.user.ygid = ygid
+            state.user.yhkh = yhkh
         }
     },
     actions: {
