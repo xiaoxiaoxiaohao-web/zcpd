@@ -60,7 +60,7 @@ export default {
     methods: {
         //获取班组列表
         getDeptList() {
-            this.$axios.post('/deptlist').then(res=> {
+            this.$axios.post('deptlist').then(res=> {
                 let data = res.data.data
                 data.forEach(e => {
                     this.deptColumns.push(e.SIMPLE_NAME)

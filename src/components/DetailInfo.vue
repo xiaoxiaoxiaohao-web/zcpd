@@ -64,7 +64,7 @@ export default {
         },
         //获取用户详细信息
         getUserInfo(ygid) {
-            this.$axios.post('/user' , {ygid: ygid}).then(res=> {
+            this.$axios.post('user' , {ygid: ygid}).then(res=> {
                 let data = res.data.data[0]
                 this.user = data
             }).catch(err => {

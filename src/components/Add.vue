@@ -83,7 +83,7 @@ export default {
         },
         //获取班组列表
         getDeptList() {
-            this.$axios.post('/deptlist').then(res=> {
+            this.$axios.post('deptlist').then(res=> {
                 let data = res.data.data
                 data.forEach(e => {
                     this.deptColumns.push(e.SIMPLE_NAME)
@@ -97,7 +97,7 @@ export default {
         },
         //增加
         onAddClick() {
-            this.$axios.post('/add', this.params).then(res => {
+            this.$axios.post('add', this.params).then(res => {
                 if(res.status == 200){
                     this.$toast({
                         message: '增加成功',
@@ -127,7 +127,7 @@ export default {
         },
         //临时增加
         onTempAddClick(){
-            this.$axios.post('/tempadd', this.params).then(res => {
+            this.$axios.post('tempadd', this.params).then(res => {
                 if(res.status == 200){
                     this.$toast({
                         message: '临时增加成功',

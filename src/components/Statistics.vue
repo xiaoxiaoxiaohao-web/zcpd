@@ -67,7 +67,7 @@ export default {
             this.loading()
             let chartData = []
             // 获取数据
-            this.$axios.post('/groupBySybz').then(res => {
+            this.$axios.post('groupBySybz').then(res => {
                 let data = res.data.data
                 //对数据进行整理适应
                 data.forEach((e) => {
@@ -140,7 +140,7 @@ export default {
             this.loading()
             let xAxisData = []
             let yAxisData = []
-            this.$axios.post('/groupBySjwz').then(res => {
+            this.$axios.post('groupBySjwz').then(res => {
                 let data = res.data.data
                 console.log(data);
                 //对数据进行整理适应
@@ -192,7 +192,7 @@ export default {
             let yAxisData = []
             this.loading()
         
-            this.$axios.post('/groupByJnpd').then(res => {
+            this.$axios.post('groupByJnpd').then(res => {
                 let data = res.data.data
                 console.log(data);
                 //对数据进行整理适应

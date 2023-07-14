@@ -34,20 +34,16 @@ export default {
     },
     methods: {
         //登录
-        onSubmit(values) {
+        onSubmit() {
             let username = this.username
             let password = this.password
             let params = {
                 yhkh: username,
                 yhmm: password
             }
+            
             //验证账号密码
-            this.$axios({
-                method: 'post',
-                url: 'http://10.194.69.22:8520/api/zcpd/login',
-                data: params
-            }).then(res => {
-                console.log(res);
+            this.$axios.post('login', params).then(res=> {
                 if(res.data.data.length > 0) {  //成功
                     this.$router.push('/index')
                     this.$toast({
@@ -66,8 +62,6 @@ export default {
             }).catch(err => {
                 console.log(err);
             })
-            
-
         }
     }
 }
